@@ -1,0 +1,13 @@
+@import "partials/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font-size: 16px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
