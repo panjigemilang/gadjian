@@ -24,21 +24,16 @@ export default function Card({ id, profile, name, phone, dob, email }) {
       </div>
       <div className="card-content-wrapper">
         <img src={profile.large} alt="Profile" />
+
         <div className="card-content">
           <label>Name</label>
           <p>{`${name.title} ${name.first} ${name.last}`}</p>
-        </div>
-        <div className="card-content">
           <label>Telephone</label>
           <p>{phone}</p>
-        </div>
-        <div className="card-content">
-          <label>Birthday</label>
-          <p>{formatDate(dob.date)}</p>
-        </div>
-        <div className="card-content">
-          <label>Email</label>
-          <p>{email}</p>
+          <label className="small-hide">Birthday</label>
+          <p className="small-hide">{formatDate(dob.date)}</p>
+          <label className="small-hide">Email</label>
+          <p className="small-hide">{email}</p>
         </div>
       </div>
     </div>

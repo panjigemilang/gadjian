@@ -6,7 +6,8 @@
   margin: 0 $space-sm;
   width: 25%;
 
-  &:first-child, &:last-child {
+  &:first-child,
+  &:last-child {
     margin: 0;
   }
 
@@ -49,8 +50,6 @@
   }
 
   .card-content-wrapper {
-    display: flex;
-    flex-direction: column;
     font-size: 16px;
     margin-top: $space-sm;
     margin-bottom: $space-sm;
@@ -59,6 +58,7 @@
     img {
       border: 1px $text-primary solid;
       border-radius: 50%;
+      display: block;
       height: 200px;
       margin: $space-xs auto;
       width: 200px;
@@ -66,15 +66,16 @@
 
     .card-content {
       line-height: 1;
-      margin: $space-xs 0;
+      margin: $space-md 0;
 
       label {
         font-weight: bold;
+        margin-top: $space-md;
       }
 
       p {
         margin: 0;
-        margin-top: $space-xs;
+        margin-bottom: $space-md;
       }
     }
   }

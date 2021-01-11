@@ -9,6 +9,10 @@
   .user-wrapper {
     display: flex;
 
+    .mobile-logo {
+      display: none;
+    }
+
     h2 {
       align-items: center;
       display: flex;
@@ -20,7 +24,7 @@
       color: $primary;
     }
 
-    img {
+    img.profile-thumbnail {
       border-radius: 50%;
       height: 80px;
       width: 80px;

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { fetchUsers } from "./api/RandomUserApi"
+import SideNavContextProvider from "./contexts/SideNavContext"
 import "./dist/scss/app.scss"
 
 // UI components
@@ -87,62 +88,68 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <Navigation />
-      <div className="container">
-        <TopBar />
-        <div className="content-wrapper">
-          <div className="heading-wrapper">
-            <div className="left-heading">
-              <h1>PERSONNEL LIST</h1>
-              <h4>List of all personnels</h4>
+    <SideNavContextProvider>
+      <div className="app">
+        <Navigation />
+        <div className="container">
+          <TopBar />
+          <div className="content-wrapper">
+            <div className="heading-wrapper">
+              <div className="left-heading">
+                <h1>PERSONNEL LIST</h1>
+                <h4>List of all personnels</h4>
+              </div>
+              <div className="right-heading">
+                <Search search={search} setSearch={setSearch} />
+                <button>
+                  <strong>ADD PERSONNEL</strong>
+                  <i className="fas fa-plus"></i>
+                </button>
+              </div>
             </div>
-            <div className="right-heading">
-              <Search search={search} setSearch={setSearch} />
-              <button>
-                ADD PERSONNEL
-                <i className="fas fa-plus"></i>
-              </button>
+            <div className="card-container">
+              {loading && <Loading />}
+              {!loading &&
+                currentData.length > 0 &&
+                currentData.map((item, i) => (
+                  <Card
+                    key={`card-${i}`}
+                    id={item.id.value}
+                    profile={item.picture}
+                    name={item.name}
+                    phone={item.phone}
+                    dob={item.dob}
+                    email={item.email}
+                  />
+                ))}
+              {!loading && currentData.length === 0 && (
+                <h1>No Data was found</h1>
+              )}
             </div>
-          </div>
-          <div className="card-container">
-            {loading && <Loading />}
-            {!loading &&
-              currentData.length > 0 &&
-              currentData.map((item, i) => (
-                <Card
-                  key={`card-${i}`}
-                  id={item.id.value}
-                  profile={item.picture}
-                  name={item.name}
-                  phone={item.phone}
-                  dob={item.dob}
-                  email={item.email}
-                />
-              ))}
-            {!loading && currentData.length === 0 && <h1>No Data was found</h1>}
-          </div>
-          <div className="navigation-control-wrapper">
-            <button
-              className="left"
-              onClick={previous}
-              disabled={prevDisabled() ? true : false}
-            >
-              <i className="fas fa-chevron-left"></i>
-              <p>Previous Page</p>
-            </button>
-            <button
-              className="right"
-              onClick={next}
-              disabled={nextDisabled() ? true : false}
-            >
-              <p>Next Page</p>
-              <i className="fas fa-chevron-right"></i>
-            </button>
+            {data.length > limit && (
+              <div className="navigation-control-wrapper">
+                <button
+                  className="left"
+                  onClick={previous}
+                  disabled={prevDisabled() ? true : false}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                  <p>Previous Page</p>
+                </button>
+                <button
+                  className="right"
+                  onClick={next}
+                  disabled={nextDisabled() ? true : false}
+                >
+                  <p>Next Page</p>
+                  <i className="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </SideNavContextProvider>
   )
 }
 
