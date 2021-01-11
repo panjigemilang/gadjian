@@ -22,8 +22,6 @@ function App() {
   const indexOfFirstData = indexOfLastData - limit
   const currentData = data.slice(indexOfFirstData, indexOfLastData)
 
-  // console.log("CurrentData", currentData)
-
   useEffect(() => {
     setLoading(true)
 
