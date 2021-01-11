@@ -4,9 +4,9 @@ const BASE_URL = "https://randomuser.me/api/"
 
 axios.defaults.baseURL = BASE_URL
 
-export const fetchUsers = async (page = 1, limit = 4) => {
+export const fetchUsers = async () => {
   return await axios
-    .get(`/?page=${page}&results=${limit}&exc=nat,login,registered,gender`)
+    .get(`/?results=28&exc=nat,login,registered,gender`)
     .then((res) => res.data)
     .catch((err) => {
       console.error(err)

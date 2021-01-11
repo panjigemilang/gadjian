@@ -12,22 +12,41 @@ import Loading from "./components/Loading"
 function App() {
   const firstRender = useRef(true)
   const [data, setData] = useState([])
-  const [info, setInfo] = useState({})
+  const [temp, setTemp] = useState([])
   const [loading, setLoading] = useState(false)
-  const [isFetching, setIsFetching] = useState(false)
   const [search, setSearch] = useState("")
+  const [limit, setLimit] = useState(4)
   const [page, setPage] = useState(1)
-  const [coba, setcoba] = useState(localStorage.getItem("coba"))
+
+  const indexOfLastData = page * limit
+  const indexOfFirstData = indexOfLastData - limit
+  const currentData = data.slice(indexOfFirstData, indexOfLastData)
+
+  // console.log("CurrentData", currentData)
 
   useEffect(() => {
     setLoading(true)
-    // get data first time
-    fetchUsers(page).then((data) => {
-      // set info for pagination
-      setInfo(data.info)
+
+    // if data exists in local storage, load data from local storage
+    if (window.localStorage.getItem("data")) {
+      const data = JSON.parse(window.localStorage.getItem("data"))
+
       setData(data.results)
+      // set temporary for searching
+      setTemp(data.results)
       setLoading(false)
-    })
+    }
+    // else get data for the first time
+    else {
+      fetchUsers(page).then((data) => {
+        setData(data.results)
+        setTemp(data.results)
+        setLoading(false)
+
+        // save it to local storage
+        window.localStorage.setItem("data", JSON.stringify(data))
+      })
+    }
   }, [])
 
   useEffect(() => {
@@ -37,16 +56,17 @@ function App() {
       return
     }
 
-    // get data when navigation controls clicked
-    if (isFetching) {
-      fetchUsers(page).then((data) => {
-        setInfo(data.info)
-        setData(data.results)
-        setLoading(false)
-        setIsFetching(false)
-      })
+    // get data when searching
+    if (search) {
+      setData(
+        temp.filter((item) =>
+          item.name.first.toLowerCase().includes(search.toLowerCase())
+        )
+      )
+    } else {
+      setData(temp)
     }
-  }, [isFetching, search])
+  }, [search])
 
   const prevDisabled = () => {
     // disabling prev control if prev page less than 1
@@ -55,21 +75,17 @@ function App() {
 
   const nextDisabled = () => {
     // get the info page if not the same as requested page, then it is the last available data
-    return info.page !== page ? true : false
+    return indexOfLastData === data.length ? true : false
   }
 
   const previous = () => {
     // refetching
     setPage(page - 1)
-    setLoading(true)
-    setIsFetching(true)
   }
 
   const next = () => {
     // refetching
     setPage(page + 1)
-    setLoading(true)
-    setIsFetching(true)
   }
 
   return (
@@ -94,7 +110,8 @@ function App() {
           <div className="card-container">
             {loading && <Loading />}
             {!loading &&
-              data.map((item, i) => (
+              currentData.length > 0 &&
+              currentData.map((item, i) => (
                 <Card
                   key={`card-${i}`}
                   id={item.id.value}
@@ -105,6 +122,7 @@ function App() {
                   email={item.email}
                 />
               ))}
+            {!loading && currentData.length === 0 && <h1>No Data was found</h1>}
           </div>
           <div className="navigation-control-wrapper">
             <button
