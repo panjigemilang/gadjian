@@ -4,6 +4,7 @@ import "../dist/scss/card.scss"
 
 export default function Card({ id, profile, name, phone, dob, email }) {
   const formatDate = (date) => {
+    // format date to show date and month
     const formattedDate = new moment(date).format("DD MMMM")
 
     return formattedDate

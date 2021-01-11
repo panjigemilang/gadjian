@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { getUser } from "./api/RandomUserApi"
+import { fetchUsers } from "./api/RandomUserApi"
 import "./dist/scss/app.scss"
 
 // UI components
@@ -17,11 +17,13 @@ function App() {
   const [isFetching, setIsFetching] = useState(false)
   const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
+  const [coba, setcoba] = useState(localStorage.getItem("coba"))
 
   useEffect(() => {
     setLoading(true)
-
-    getUser(page).then((data) => {
+    // get data first time
+    fetchUsers(page).then((data) => {
+      // set info for pagination
       setInfo(data.info)
       setData(data.results)
       setLoading(false)
@@ -29,36 +31,42 @@ function App() {
   }, [])
 
   useEffect(() => {
+    // will be skipped when rendering first time
     if (firstRender.current) {
       firstRender.current = false
       return
     }
 
+    // get data when navigation controls clicked
     if (isFetching) {
-      getUser(page).then((data) => {
+      fetchUsers(page).then((data) => {
         setInfo(data.info)
         setData(data.results)
         setLoading(false)
         setIsFetching(false)
       })
     }
-  }, [isFetching])
+  }, [isFetching, search])
 
   const prevDisabled = () => {
+    // disabling prev control if prev page less than 1
     return page - 1 === 0 ? true : false
   }
 
   const nextDisabled = () => {
+    // get the info page if not the same as requested page, then it is the last available data
     return info.page !== page ? true : false
   }
 
   const previous = () => {
+    // refetching
     setPage(page - 1)
     setLoading(true)
     setIsFetching(true)
   }
 
   const next = () => {
+    // refetching
     setPage(page + 1)
     setLoading(true)
     setIsFetching(true)
