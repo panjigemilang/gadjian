@@ -10,6 +10,8 @@
     display: flex;
 
     h2 {
+      align-items: center;
+      display: flex;
       margin-left: auto;
       margin-right: $space-md;
     }

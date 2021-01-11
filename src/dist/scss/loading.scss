@@ -1,0 +1,15 @@
+@import "partials/prefix";
+
+.loading-wrapper {
+  min-height: 50vh;
+  position: relative;
+  width: 100%;
+
+  i {
+    @include transform(translate(-50%, -50%));
+    font-size: 3rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}

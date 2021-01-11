@@ -1,11 +1,8 @@
 import "../dist/scss/search.scss"
 
-export default function Search({ state, setState }) {
+export default function Search({ search, setSearch }) {
   const onChange = ({ target }) => {
-    setState({
-      ...state,
-      [target.name]: target.value,
-    })
+    setSearch(target.value)
   }
 
   return (
@@ -16,7 +13,7 @@ export default function Search({ state, setState }) {
         name="search"
         placeholder="Find Personnels"
         onChange={onChange}
-        value={state.search}
+        value={search}
       />
     </div>
   )

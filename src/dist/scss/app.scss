@@ -20,7 +20,7 @@
 html, body { 
   color: $text-primary;
   font-family: "Product Sans";
-  font-size: 16px;
+  font-size: 14px;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -106,6 +106,7 @@ button {
     }
 
     .navigation-control-wrapper {
+      color: black;
       display: flex;
       justify-content: center;
       margin-top: $space-lg;

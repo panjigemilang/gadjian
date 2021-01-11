@@ -1,12 +1,19 @@
 import React from "react"
+import moment from "moment"
 import "../dist/scss/card.scss"
 
-export default function Card() {
+export default function Card({ id, profile, name, phone, dob, email }) {
+  const formatDate = (date) => {
+    const formattedDate = new moment(date).format("DD MMMM")
+
+    return formattedDate
+  }
+
   return (
     <div className="card-wrapper">
       <div className="top">
         <p>
-          Personnel ID: <span>123456</span>
+          Personnel ID: <span>{id ? id : "-"}</span>
         </p>
         <div className="dots">
           <span></span>
@@ -15,22 +22,22 @@ export default function Card() {
         </div>
       </div>
       <div className="card-content-wrapper">
-        <img src="http://via.placeholder.com/200x200.png" alt="Profile" />
+        <img src={profile.large} alt="Profile" />
         <div className="card-content">
           <label>Name</label>
-          <p>First name Last name</p>
+          <p>{`${name.title} ${name.first} ${name.last}`}</p>
         </div>
         <div className="card-content">
           <label>Telephone</label>
-          <p>08931xxxxx</p>
+          <p>{phone}</p>
         </div>
         <div className="card-content">
           <label>Birthday</label>
-          <p>First name Last name</p>
+          <p>{formatDate(dob.date)}</p>
         </div>
         <div className="card-content">
           <label>Email</label>
-          <p>aiwdj@gmail.com</p>
+          <p>{email}</p>
         </div>
       </div>
     </div>

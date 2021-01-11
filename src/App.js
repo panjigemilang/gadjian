@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { getUser } from "./api/RandomUserApi"
 import "./dist/scss/app.scss"
 
 // UI components
@@ -6,11 +7,62 @@ import Navigation from "./components/layouts/Navigation"
 import TopBar from "./components/layouts/TopBar"
 import Search from "./components/Search"
 import Card from "./components/Card"
+import Loading from "./components/Loading"
 
 function App() {
-  const [state, setState] = useState({
-    search: "",
-  })
+  const firstRender = useRef(true)
+  const [data, setData] = useState([])
+  const [info, setInfo] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
+  const [search, setSearch] = useState("")
+  const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    setLoading(true)
+
+    getUser(page).then((data) => {
+      setInfo(data.info)
+      setData(data.results)
+      setLoading(false)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+
+    if (isFetching) {
+      getUser(page).then((data) => {
+        setInfo(data.info)
+        setData(data.results)
+        setLoading(false)
+        setIsFetching(false)
+      })
+    }
+  }, [isFetching])
+
+  const prevDisabled = () => {
+    return page - 1 === 0 ? true : false
+  }
+
+  const nextDisabled = () => {
+    return info.page !== page ? true : false
+  }
+
+  const previous = () => {
+    setPage(page - 1)
+    setLoading(true)
+    setIsFetching(true)
+  }
+
+  const next = () => {
+    setPage(page + 1)
+    setLoading(true)
+    setIsFetching(true)
+  }
 
   return (
     <div className="app">
@@ -24,7 +76,7 @@ function App() {
               <h4>List of all personnels</h4>
             </div>
             <div className="right-heading">
-              <Search state={state} setState={setState} />
+              <Search search={search} setSearch={setSearch} />
               <button>
                 ADD PERSONNEL
                 <i className="fas fa-plus"></i>
@@ -32,20 +84,37 @@ function App() {
             </div>
           </div>
           <div className="card-container">
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {loading && <Loading />}
+            {!loading &&
+              data.map((item, i) => (
+                <Card
+                  key={`card-${i}`}
+                  id={item.id.value}
+                  profile={item.picture}
+                  name={item.name}
+                  phone={item.phone}
+                  dob={item.dob}
+                  email={item.email}
+                />
+              ))}
           </div>
           <div className="navigation-control-wrapper">
-            <div className="left">
+            <button
+              className="left"
+              onClick={previous}
+              disabled={prevDisabled() ? true : false}
+            >
               <i className="fas fa-chevron-left"></i>
               <p>Previous Page</p>
-            </div>
-            <div className="right">
+            </button>
+            <button
+              className="right"
+              onClick={next}
+              disabled={nextDisabled() ? true : false}
+            >
               <p>Next Page</p>
               <i className="fas fa-chevron-right"></i>
-            </div>
+            </button>
           </div>
         </div>
       </div>
