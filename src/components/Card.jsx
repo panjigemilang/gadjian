@@ -14,7 +14,8 @@ export default function Card({ id, profile, name, phone, dob, email }) {
     <div className="card-wrapper">
       <div className="top">
         <p>
-          Personnel ID: <span>{id ? id : "-"}</span>
+          Personnel ID:
+          <span data-testid="qa-personnel-id">{id ? id : "-"}</span>
         </p>
         <div className="dots">
           <span></span>

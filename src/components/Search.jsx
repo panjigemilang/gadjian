@@ -14,6 +14,7 @@ export default function Search({ search, setSearch }) {
         placeholder="Find Personnels"
         onChange={onChange}
         value={search}
+        data-testid="qa-search"
       />
     </div>
   )
