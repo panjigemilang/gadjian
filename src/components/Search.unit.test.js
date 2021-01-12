@@ -7,7 +7,7 @@ describe("<Search />", () => {
   const useStateSpy = jest.spyOn(React, "useState")
   useStateSpy.mockImplementationOnce((init) => [init, updateSearch])
 
-  it("should render given value", () => {
+  it("should render given value on input change", () => {
     const wrapper = mount(<Search setSearch={updateSearch} />)
     const input = wrapper.find('[data-testid="qa-search"]')
 
