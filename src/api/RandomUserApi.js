@@ -10,6 +10,8 @@ export const fetchUsers = async () => {
     .then((res) => res.data)
     .catch((err) => {
       console.error(err)
-      return []
+      return {
+        results: [],
+      }
     })
 }
