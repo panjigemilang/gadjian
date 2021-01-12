@@ -18,5 +18,6 @@ describe("<Search />", () => {
     })
 
     expect(updateSearch).toHaveBeenCalledWith("test")
+    wrapper.unmount()
   })
 })
