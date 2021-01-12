@@ -9,5 +9,7 @@ describe("<Loading />", () => {
     expect(wrapper.find('[data-testid="loading-animation"]').exists()).toBe(
       true
     )
+
+    wrapper.unmount()
   })
 })

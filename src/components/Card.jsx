@@ -5,7 +5,7 @@ import "../dist/scss/card.scss"
 export default function Card({ id, profile, name, phone, dob, email }) {
   const formatDate = (date) => {
     // format date to show date and month
-    const formattedDate = new moment(date).format("DD MMMM")
+    const formattedDate = new moment(date).format("DD MMM")
 
     return formattedDate
   }
@@ -24,17 +24,25 @@ export default function Card({ id, profile, name, phone, dob, email }) {
         </div>
       </div>
       <div className="card-content-wrapper">
-        <img src={profile.large} alt="Profile" />
+        <img
+          src={profile.large}
+          alt="Profile"
+          data-testid="qa-profile-thumbnail"
+        />
 
         <div className="card-content">
           <label>Name</label>
-          <p>{`${name.title} ${name.first} ${name.last}`}</p>
+          <p data-testid="qa-fullname">{`${name.title} ${name.first} ${name.last}`}</p>
           <label>Telephone</label>
-          <p>{phone}</p>
+          <p data-testid="qa-phone">{phone}</p>
           <label className="small-hide">Birthday</label>
-          <p className="small-hide">{formatDate(dob.date)}</p>
+          <p data-testid="qa-dob" className="small-hide">
+            {formatDate(dob.date)}
+          </p>
           <label className="small-hide">Email</label>
-          <p className="small-hide">{email}</p>
+          <p data-testid="qa-email" className="small-hide">
+            {email}
+          </p>
         </div>
       </div>
     </div>
